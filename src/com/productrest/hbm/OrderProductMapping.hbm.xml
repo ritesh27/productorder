@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 17, 2016 12:23:28 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.productrest.vo.OrderProductMapping" table="ORDERPRODUCT">
+        <id name="orderId" type="int">
+            <column name="ORDERID" />
+            <generator class="assigned" />
+        </id>
+        <property name="productId" type="int">
+            <column name="PRODUCTID" />
+        </property>
+        <property name="productQuantity" type="int">
+            <column name="PRODUCTQUANTITY" />
+        </property>
+    </class>
+</hibernate-mapping>
