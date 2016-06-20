@@ -194,6 +194,23 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<resources>
+        <resource>
+            <directory>src/com/productrest/util</directory>
+            <includes>
+                <include>**/*.xml</include>
+            </includes>
+        </resource>
+         <resource>
+            <directory>src/com/productrest/hbm</directory>
+            <includes>
+            
+                <include>**/*.xml</include>
+            </includes>
+            <targetPath>com/productrest/hbm</targetPath>
+        </resource>
+        
+        </resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
