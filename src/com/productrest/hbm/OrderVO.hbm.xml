@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jun 18, 2016 4:26:05 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.productrest.vo.OrderVO" table="ORDERNEW">
+    <class name="com.productrest.vo.OrderVO" schema="ecom" table="ORDER">
         <id name="orderId" type="int">
             <column name="ORDERID" />
             <generator class="assigned" />

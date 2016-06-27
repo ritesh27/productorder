@@ -8,21 +8,20 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.productrest.dao.OrderDAO;
 import com.productrest.dao.ProductDAO;
-import com.productrest.vo.OrderVO;
 import com.productrest.vo.ProductVO;
 
-@Path("/ProductService")
+@Path("/productservice")
 public class ProductService {
 	   public ProductDAO prodDAO = new ProductDAO();
-	   public OrderDAO orderDAO = new OrderDAO();
+	  
 	   
 	   /**
 	    *  {
@@ -35,7 +34,7 @@ public class ProductService {
 	    * */
 	   
 	   @PUT
-	   @Path("/product/addProduct")
+	   @Path("/pr1/addproduct")
 	   @Produces(MediaType.APPLICATION_JSON)
 	   @Consumes(MediaType.APPLICATION_JSON)
 	   public Response addProduct(String productDetails){
@@ -43,12 +42,12 @@ public class ProductService {
 		   Gson gson = new GsonBuilder().create();
 		   System.out.println("GSON OBJECT CONVERION TO PRODUCTVO");
 		   ProductVO productVO = gson.fromJson(productDetails, ProductVO.class);
-		   prodDAO.addProduct(productVO);
+		   prodDAO.addOrUpdateProduct(productVO);
 		   return Response.ok().entity(new GenericEntity<String>("Product added Successfully") {}).build();
 	   }
 
 	   @GET
-	   @Path("/product/getProducts")
+	   @Path("/pr1/getproducts")
 	   @Produces(MediaType.APPLICATION_JSON)
 	   @Consumes(MediaType.APPLICATION_JSON)
 	   public Response getProducts(){
@@ -57,7 +56,7 @@ public class ProductService {
 	   }
 	   
 	   @GET
-	   @Path("/product/getProduct/{productid}")
+	   @Path("/pr1/getproduct/{productid}")
 	   @Produces(MediaType.APPLICATION_JSON)
 	   @Consumes(MediaType.APPLICATION_JSON)
 	   public String getProduct(@PathParam("productid") String productid){
@@ -82,56 +81,32 @@ public class ProductService {
 			'orderTotal': '1'
 		}
 	    * */
-	   @PUT
-	   @Path("/order/addOrder")
-	   @Produces(MediaType.APPLICATION_JSON)
-	   @Consumes(MediaType.APPLICATION_JSON)
-	   public Response addOrder(String orderDetails){
-		   System.out.println("Service running from orderdetails :"+orderDetails);
-		   Gson gson = new GsonBuilder().create();
-		   System.out.println("GSON OBJECT CONVERION TO ORDERVO");
-		   OrderVO orderVO = gson.fromJson(orderDetails, OrderVO.class);
-		   orderDAO.addOrder(orderVO);
-		   return Response.ok().entity(new GenericEntity<String>("Order Created Successfully") {}).build();
-	   }
-
-	   @GET
-	   @Path("/order/getOrder/{orderid}")
-	   @Produces(MediaType.APPLICATION_JSON)
-	   @Consumes(MediaType.APPLICATION_JSON)
-	   public String getOrder(@PathParam("orderid") String orderId){
-		   System.out.println("Service running for get orderid :"+orderId);
-		   Gson gson = new GsonBuilder().create();
-		   System.out.println("GSON OBJECT CONVERION TO ORDERVO");
-		   OrderVO prodVO = orderDAO.getOrder(orderId);
-		   String orderdetails;
-		   orderdetails = "{\"orderdetails\" :" + gson.toJson(prodVO) + "}";
-		   //System.out.println(gson.toJson(productVO));
-		   return orderdetails;
-		   //return Response.ok().entity(new GenericEntity<String>("Success") {}).build();
-	   }
 	   
-
 	   @POST
-	   @Path("/order/updateOrder/{orderid}")
+	   @Path("/pr1/updateproduct/{productid}")
 	   @Produces(MediaType.APPLICATION_JSON)
 	   @Consumes(MediaType.APPLICATION_JSON)
-	   public Response updateOrder(@PathParam("orderid") String orderid,String orderDetails){
-		   System.out.println("Service running from orderdetails :"+orderid);
+	   public Response updateproduct(@PathParam("productid") String productid,String productDetails ){
+		   System.out.println("Service running from productDetails :"+productDetails);
 		   Gson gson = new GsonBuilder().create();
-		   System.out.println("GSON OBJECT CONVERION TO ORDERVO");
-		   OrderVO orderVO = gson.fromJson(orderDetails, OrderVO.class);
-		   orderDAO.updateOrder(orderid,orderVO);
-		   return Response.ok().entity(new GenericEntity<String>("Order Updated Successfully") {}).build();
+		   System.out.println("GSON OBJECT CONVERION TO PRODUCTVO");
+		   ProductVO productVO = gson.fromJson(productDetails, ProductVO.class);
+		   productVO.setProductId(Integer.parseInt(productid));
+		   prodDAO.addOrUpdateProduct(productVO);
+		   return Response.ok().entity(new GenericEntity<String>("Product update Successfully") {}).build();
 	   }
 	   
 	   @DELETE
-	   @Path("/order/removeOrder/{orderid}")
+	   @Path("/pr1/deleteproduct/{productid}")
 	   @Produces(MediaType.APPLICATION_JSON)
 	   @Consumes(MediaType.APPLICATION_JSON)
-	   public Response removeOrder(@PathParam("orderid") String orderid){
-		   System.out.println("Service running from orderdetails :"+orderid);
-		   orderDAO.removeOrder(orderid);
-		   return Response.ok().entity(new GenericEntity<String>("Order Deleted Successfully") {}).build();
+	   public Response deleteproduct(@PathParam("productid") String productid){
+		   System.out.println("Service running from productDetails :"+productid);
+		   Gson gson = new GsonBuilder().create();
+		   System.out.println("GSON OBJECT CONVERION TO PRODUCTVO");
+		   ProductVO productVO = prodDAO.getProduct(productid);//gson.fromJson(productDetails, ProductVO.class);
+		   prodDAO.deleteProduct(productVO);
+		   return Response.ok().entity(new GenericEntity<String>("Product deleted Successfully") {}).build();
 	   }
+	  
 }

@@ -24,10 +24,17 @@ public class ProductDAO {
         session.getTransaction().commit();    
 	}
 	
-	public void addProduct(ProductVO productVO){
+	public void addOrUpdateProduct(ProductVO productVO){
 		Session session = SessionFactoryUtil.getSessionFactory().openSession();
         session.beginTransaction();
-        session.save(productVO);
+        session.saveOrUpdate(productVO);
+        session.getTransaction().commit();
+	}
+	
+	public void deleteProduct(ProductVO productVO){
+		Session session = SessionFactoryUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.delete(productVO);
         session.getTransaction().commit();
 	}
 	
